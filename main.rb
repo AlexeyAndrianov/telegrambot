@@ -46,7 +46,7 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
         /stop (to end session)
         /randomstyle (to choose music style randomly)
         /wiki (to learn something new reading wikipedia)
-        /map (go to the random place)
+        /randomminskplace (go to the random place in Minsk)
         /givemeacandy
         "
       )
@@ -63,9 +63,9 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
         text: "Bye, #{message.from.first_name}! See ya next time!"
       )
 
-    when '/map'
-      lat = rand(53..54)
-      long = rand(27..28)
+    when '/randomminskplace'
+      lat = rand(53.82..53.96)
+      long = rand(27.43..27.69)
       bot.api.send_location(chat_id: message.chat.id, latitude: lat, longitude: long)
       bot.api.send_message(
         chat_id: message.chat.id,
