@@ -64,8 +64,8 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
       )
 
     when '/map'
-      lat = rand(-65..65)
-      long = rand(-110..110)
+      lat = rand(53..54)
+      long = rand(27..28)
       bot.api.send_location(chat_id: message.chat.id, latitude: lat, longitude: long)
       bot.api.send_message(
         chat_id: message.chat.id,
