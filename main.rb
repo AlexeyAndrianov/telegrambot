@@ -21,13 +21,19 @@ STYLES = [
   "Core"
 ]
 
+CANDY = [
+"http://www.partycity.com/images/products/en_us/gateways/candy-2015/candy-by-type/candy-by-type-lollipops.jpg",
+"http://chegg.com/play/wp-content/uploads/sites/3/2012/10/halloween-candy-by-phanton-kitty-1.jpg",
+"http://images.meredith.com/content/dam/bhg/Images/2014/8/25/RU232726.jpg.rendition.largest.jpg"
+]
+
 Telegram::Bot::Client.run(TOKEN) do |bot|
   bot.listen do |message|
     case message.text
     when '/start', '/start start'
       bot.api.send_message(
         chat_id: message.chat.id,
-        text: "Hello, #{message.from.first_name}! I'm your music guide for today!
+        text: "Hello, #{message.from.first_name}! I'm your music and travel guide for today!
         Type /commands to view full commands list
         "
       )
@@ -41,6 +47,7 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
         /randomstyle (to choose music style randomly)
         /wiki (to learn something new reading wikipedia)
         /map (go to the random place)
+        /givemeacandy
         "
       )
 
@@ -64,11 +71,18 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
         chat_id: message.chat.id,
         text: "Your coordinates are: #{lat}, #{long}"
       )
+    when '/givemeacandy'
+      bot.api.send_message(
+        chat_id: message.chat.id,
+        text: "I am sorry, #{message.from.first_name}! The only candies I got are virtual. But still arent they awesome?
+        #{CANDY.sample}"
+      )
 
     else
       bot.api.send_message(
         chat_id: message.chat.id,
-        text: "I am just a bot. Dunno what are you talking about, dude ;("
+        text: "I am just a bot, dude! Dunno what are you talking about ;("
+      )
     end
   end
 end
