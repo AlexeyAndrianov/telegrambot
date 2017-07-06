@@ -64,6 +64,11 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
         chat_id: message.chat.id,
         text: "Your coordinates are: #{lat}, #{long}"
       )
+
+    else
+      bot.api.send_message(
+        chat_id: message.chat.id,
+        text: "I am just a bot. Dunno what are you talking about, dude ;("
     end
   end
 end
