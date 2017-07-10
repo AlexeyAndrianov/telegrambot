@@ -18,17 +18,39 @@ STYLES = [
   "Pop",
   "Rock",
   "Metal",
-  "Core"
-]
+  "Core"]
 
 CANDY = [
 "http://www.partycity.com/images/products/en_us/gateways/candy-2015/candy-by-type/candy-by-type-lollipops.jpg",
 "http://chegg.com/play/wp-content/uploads/sites/3/2012/10/halloween-candy-by-phanton-kitty-1.jpg",
-"http://images.meredith.com/content/dam/bhg/Images/2014/8/25/RU232726.jpg.rendition.largest.jpg"
-]
+"http://images.meredith.com/content/dam/bhg/Images/2014/8/25/RU232726.jpg.rendition.largest.jpg"]
 
 Telegram::Bot::Client.run(TOKEN) do |bot|
   bot.listen do |message|
+=begin
+  kb = [
+    Telegram::Bot::Types::KeyboardButton.new(text: 'Give me your phone number', request_contact: true),
+    Telegram::Bot::Types::KeyboardButton.new(text: 'Show me your location', request_location: true)
+  ]
+
+  markup = Telegram::Bot::Types::ReplyKeyboardMarkup.new(keyboard: kb)
+  bot.api.send_message(chat_id: message.chat.id, text: 'Hey!', reply_markup: markup)
+
+  case message
+  when Telegram::Bot::Types::CallbackQuery
+    if message.data == 'touch'
+      bot.api.send_message(chat_id: message.from.id, text: "Don't touch me!")
+    end
+  when Telegram::Bot::Types::Message
+    kb = [
+      Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Go to Google', url: 'https://google.com'),
+      Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Touch me', callback_data: 'touch'),
+      Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Switch to inline', switch_inline_query: 'some text')
+    ]
+    markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
+    bot.api.send_message(chat_id: message.chat.id, text: 'Make a choice', reply_markup: markup)
+#  end
+=end
     case message.text
     when '/start', '/start start'
       bot.api.send_message(
@@ -47,8 +69,7 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
         /randomstyle (to choose music style randomly)
         /wiki (to learn something new reading wikipedia)
         /randomminskplace (go to the random place in Minsk)
-        /givemeacandy
-        "
+        /givemeacandy"
       )
 
     when '/randomstyle'
@@ -77,6 +98,7 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
         text: "I am sorry, #{message.from.first_name}! The only candies I got are virtual. But still arent they awesome?
         #{CANDY.sample}"
       )
+
 
     else
       bot.api.send_message(
